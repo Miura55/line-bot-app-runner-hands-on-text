@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2024-03-23T17:59:35Z",
+  "id": "linedc-app-runner-handson",
+  "duration": 0,
+  "title": "AWS App RunenrでLINE bot開発ハンズオン",
+  "authors": "Koki Miura",
+  "summary": "AWS App RunnerでLINE Botの開発環境を構築するハンズオンです",
+  "source": "1uK__e_oxXhCph7DF_39Ca2oeIENI7dDyMWqd_o_Bvdw",
+  "theme": "web",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "web"
+  ],
+  "tags": [
+    "aws",
+    "cdk",
+    "cicd",
+    "linedc",
+    "web"
+  ],
+  "feedback": "https://twitter.com/k_miura_io",
+  "url": "linedc-app-runner-handson"
+}
