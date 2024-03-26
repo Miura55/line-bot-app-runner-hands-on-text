@@ -339,7 +339,7 @@ git commit -am &#34;TODOボットにアップデート&#34;</pre>
       </google-codelab-step>
     
       <google-codelab-step label="片付け" duration="0">
-        <p>ここではハンズオン終了後の片付けの手順を解説します。今回構築したアプリケーションは放置していると多少ではありますが毎月AWSの料金がかかるのでハンズオンを一通り試したら削除することをお勧めします。</p>
+        <p>ここではハンズオン終了後の片付けの手順を解説します。今回構築したアプリケーションは放置していると毎月AWSの利用料金がかかるのでハンズオンを一通り試して不要になったら削除することをお勧めします。</p>
 <h2 is-upgraded>CDKで構築したリソースの削除</h2>
 <p>CDKで構築したリソースは以下のコマンドで削除できます。</p>
 <pre>cd /home/ec2-user/environment/line-bot-aws-app-runner-handson/cdk
@@ -348,19 +348,9 @@ cdk destroy --all</pre>
 <pre>Are you sure you want to delete: HandsonPipelineStack, HandsonAppStack, HandsonDeployStack (y/n)?</pre>
 <p>各スタックの削除を待ちます。最終的には以下の出力の通りすべてのスタックが削除されたらCDKのリソースの削除は完了です。</p>
 <h2 is-upgraded>Cloud9を削除</h2>
-<p>以下のURLからCloudFormationのコンソールを開きます。</p>
-<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks</a></p>
-<p>スタック一覧のうち、「aws-cloud9-cloud9-for-prototyping」を含むスタック名を開きます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\52137ed3a0b76361.png"></p>
-<p>スタックの詳細画面を開いて、右上の「削除」ボタンをクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\3b8d24e0d6ece24f.png"></p>
-<p>以下の確認ダイアログが表示されたら「削除」ボタンをクリックして削除を実行します。</p>
-<p class="image-container"><img style="width: 539.00px" src="img\\8e027744ad82f66f.png"></p>
-<p>削除を実行するとCloud9の削除が実行されます。「イベント」タブをクリックするとスタックのイベントステータスを確認できます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\511dd2a07c65e405.png"></p>
-<p>最終的に論理IDがCloud9のスタック名のステータスが <code>DELETE_COMPLETE</code> になればスタックの削除は完了です。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\a96e1685f869da0e.png"></p>
-<p>再びCloud9のコンソールに戻るとCloud9の環境自体は残っているので、「cloud9-for-prototyping」を選択して、「削除」をクリックします。</p>
+<p>以下のURLからCloud9のコンソール画面を開きます。</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloud9control/home?region=ap-northeast-1#/" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloud9control/home?region=ap-northeast-1#/</a></p>
+<p><code>cloud9-for-prototyping</code> を選択して、「削除」をクリックします。</p>
 <p class="image-container"><img style="width: 601.70px" src="img\\996fce78136a3eaf.png"></p>
 <h2 is-upgraded>Bootstrapで作成されたスタックを削除</h2>
 <p>CDKのBootstrapのときに構築された「CDKToolkit」スタックも不要であれば削除します。</p>
@@ -411,7 +401,10 @@ cdk destroy --all</pre>
       </google-codelab-step>
     
       <google-codelab-step label="Appendix" duration="0">
-        <p>ここでは今回のハンズオンで使用した技術について解説します。</p>
+        <p>ここでは今回のハンズオンの関連トピックについて解説します。</p>
+<h2 is-upgraded>LINE Botに使用した言語</h2>
+<p class="image-container"><img style="width: 218.57px" src="img\\ac731533d0d66fca.png"></p>
+<p>今回、LINE BotはGo言語を使って記述しました。Googleが開発した静的型付け言語です。C言語のように型付けができて、かつPythonをはじめとしたスクリプト言語のように生産性が高く読みやすい言語設計になっています。そして、軽量で高速な処理を実現しているため、コンテナアプリケーションとの相性も抜群なので選定しました。</p>
 <h2 is-upgraded>AWS CDKについて</h2>
 <p class="image-container"><img style="width: 601.70px" src="img\\e166c02f6bf2682.png"></p>
 <p>AWS CDKはAWSのサービス構成をコードで定義するためのIaCツールです。IaCとはInfrastracture as Codeの略で、インフラ構成をコードベースで管理する仕組みをいいます。</p>
@@ -422,6 +415,8 @@ cdk destroy --all</pre>
 <li>構成変更が出てきたときにあとから変更することが簡単にできる</li>
 <li>別のAWS環境でも全く同じ構成でデプロイできるので再現性が高い</li>
 </ul>
+<p>CDKはものすごくアップデートが頻繁に行われており、CDKを使う際には公式ドキュメントなどでキャッチアップをするといいです。</p>
+<p><a href="https://github.com/aws/aws-cdk/releases" target="_blank">https://github.com/aws/aws-cdk/releases</a></p>
 <h2 is-upgraded>AWS App Runnerについて</h2>
 <p class="image-container"><img style="width: 236.50px" src="img\\5bb40503c599ec3f.png"></p>
 <p>App Runnerにはデプロイのパターンが2つあります。一つはソースコードのレポジトリからデプロイするパターンと今回行ったビルドしたコンテナイメージデプロイするパターンと2つあります。</p>
@@ -429,9 +424,31 @@ cdk destroy --all</pre>
 <h2 is-upgraded>CI/CDについて</h2>
 <p class="image-container"><img style="width: 396.00px" src="img\\4f7ab1fa95bcb035.png"></p>
 <p>今回はAWSのサービスで完結できるようにCodeCommitのレポジトリ、CodeBuildを組み合わせたCI/CDを構築していますが、CodeBuild自体はGithubやBitbucketのレポジトリと連携してビルドするフローを構築することもできます。GithubやBitbucketでソースコード管理している場合はCodeCommitのレポジトリから置き換えるのもありです。</p>
-<h2 is-upgraded>LINE Botに使用した言語</h2>
-<p class="image-container"><img style="width: 218.57px" src="img\\ac731533d0d66fca.png"></p>
-<p>今回、LINE BotはGo言語を使って記述しました。Googleが開発した静的型付け言語です。C言語のように型付けができて、かつPythonをはじめとしたスクリプト言語のように生産性が高く読みやすい言語設計になっています。そして、軽量で高速な処理を実現しているため、コンテナアプリケーションとの相性も抜群なので選定しました。</p>
+<h2 is-upgraded>DynamoDBのテーブル設計</h2>
+<p class="image-container"><img style="width: 263.29px" src="img\\9dfa06842d91f01a.png"></p>
+<p>今回使用したDynamoDBのテーブルは以下の設計になっています。LINEのユーザーIDをパーティションキー、Webhookのイベントで取得できるtimestampをソートキーにした複合キーになっています。Queryを使用してLINEのユーザーIDでデータを絞り込むことでユーザー毎のTodoリストを作成できるような構成になっています。</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>アトリビュート名</p>
+</td><td colspan="1" rowspan="1"><p>キー</p>
+</td><td colspan="1" rowspan="1"><p>型</p>
+</td><td colspan="1" rowspan="1"><p>説明</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>userId</p>
+</td><td colspan="1" rowspan="1"><p>partition</p>
+</td><td colspan="1" rowspan="1"><p>Text</p>
+</td><td colspan="1" rowspan="1"><p>LINEのユーザーID</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>timestamp</p>
+</td><td colspan="1" rowspan="1"><p>sort</p>
+</td><td colspan="1" rowspan="1"><p>Text</p>
+</td><td colspan="1" rowspan="1"><p>Webhookで受け取ったタイムスタンプ</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>text</p>
+</td><td colspan="1" rowspan="1"><p>-</p>
+</td><td colspan="1" rowspan="1"><p>Text</p>
+</td><td colspan="1" rowspan="1"><p>ユーザーが送信したタスク</p>
+</td></tr>
+</table>
 
 
       </google-codelab-step>
