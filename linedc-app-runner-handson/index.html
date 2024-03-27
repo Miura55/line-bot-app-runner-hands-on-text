@@ -407,7 +407,7 @@ cdk destroy --all</pre>
 <p>フォローイベントは友だち追加を行ったときにリクエストされるイベントです。このイベントは新規で友だち追加された時のパターンとブロックした後に再度友だち追加された時の２パターンの状態を受け取ることができますが、この状態は完全な正確性を保証するものではないです。</p>
 <p><a href="https://developers.line.biz/ja/reference/messaging-api/#follow-event" target="_blank">https://developers.line.biz/ja/reference/messaging-api/#follow-event</a></p>
 <p>ポストバックイベントは今回使用したテンプレートメッセージやフレックスメッセージなどに仕込まれたボタンを押すとそれを <code>data</code> プロパティに格納させることでメッセージとしては送信する必要なく、サーバーサイドでデータ処理をしたいときに使えます。今回はTodoリストのテンプレートメッセージに仕込んだボタンをタップした時のアクションとしてポストバックを採用しています。</p>
-<p><a href="https://developers.line.biz/ja/reference/messaging-api/#follow-event" target="_blank">https://developers.line.biz/ja/reference/messaging-api/#follow-event</a></p>
+<p><a href="https://developers.line.biz/ja/reference/messaging-api/#postback-action" target="_blank">https://developers.line.biz/ja/reference/messaging-api/#postback-action</a></p>
 <h2 is-upgraded>LINE Botに使用した言語</h2>
 <p class="image-container"><img style="width: 218.57px" src="img\\ac731533d0d66fca.png"></p>
 <p>今回、LINE BotはGo言語を使って記述しました。Googleが開発した静的型付け言語です。C言語のように型付けができて、かつPythonをはじめとしたスクリプト言語のように生産性が高く読みやすい言語設計になっています。そして、軽量で高速な処理を実現しているため、コンテナアプリケーションとの相性も抜群なので選定しました。</p>
