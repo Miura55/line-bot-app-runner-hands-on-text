@@ -37,7 +37,7 @@
 <p>次のステップではCodeCommit、CodeBuildを使ったCI/CD環境をCodePipelineで構築します。</p>
 <p>最後のステップでは、Botのコードを変更してCodeCommitにプッシュすることでDynamoDBを使ったTodoボットにアップデートしていきます。</p>
 <p>以上の構成になりますが、全部一から手作業で構築すると複雑なので、簡略化させるためにAWS CDKを使用してアプリケーションを構築していきます。また、CDKを使った操作やCodeCommitへのコードのPushなどはAWSのオンラインIDEであるCloud9を使用します。</p>
-<p class="image-container"><img style="width: 628.00px" src="img\\ebe992b685862c3b.png"></p>
+<p class="image-container"><img style="width: 628.00px" src="img/ebe992b685862c3b.png"></p>
 <p>全体の完成像を紹介したところで、次のページから環境構築を進めていきます。</p>
 
 
@@ -57,9 +57,9 @@
 <p><a href="https://developers.line.biz/ja/docs/messaging-api/getting-started/#using-console" target="_blank">https://developers.line.biz/ja/docs/messaging-api/getting-started/#using-console</a></p>
 <p>チャネルを作成したらチャネルシークレットとチャネルアクセストークンをコピーしてどこかにメモしておきます。</p>
 <p>チャネルシークレットは「チャネル基本設定」タブで確認できます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\43e8f5c06c3bd576.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/43e8f5c06c3bd576.png"></p>
 <p>チャネルアクセストークンは「Messaging API設定」タブで確認できます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\35bbe300900047d7.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/35bbe300900047d7.png"></p>
 <h2 is-upgraded>IAMユーザーを作成(ルートアカウントの場合)</h2>
 <p>AWSでの作業を進める前に今回のハンズオンを進めるために必要な権限が付与されたIAMユーザーを作成します。後の手順にあるCloud9からCodeCommitのレポジトリにコードをPushするためにIAMユーザーを用意する必要があります。</p>
 <aside class="special"><p>すでにAdministratorAccessのポリシーが付与されたIAMユーザーでサインインしている場合はこの手順をスキップして、次のパラメーターストアの設定に進んでいただき問題ありません。</p>
@@ -67,43 +67,43 @@
 <p>以下のURLでIAMユーザーのコンソールを開きます。</p>
 <p><a href="https://us-east-1.console.aws.amazon.com/iam/home#/users" target="_blank">https://us-east-1.console.aws.amazon.com/iam/home#/users</a></p>
 <p>ユーザー一覧の右上にある「ユーザーの作成」をクリックしてIAMユーザーを作成します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\bf968963f2ecc31e.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/bf968963f2ecc31e.png"></p>
 <p>ユーザー名は「line-apprunner-hands-on」とし、「AWS マネジメントコンソールへのユーザーアクセスを提供する」のチェックボックスにチェックを入れてIAMユーザーのアカウントを作成します。</p>
 <p>チェックボックスをクリックしたときに展開される画面で以下の設定を行います。</p>
 <ul>
 <li>ユーザータイプ：IAMユーザーを作成します(Identity Centerを有効にしていない場合はこの選択項目は出てきません)</li>
 <li>コンソールパスワード：ユーザーのパスワードを設定します(自動生成でもカスタムパスワードでもどちらでも結構です)</li>
 </ul>
-<p class="image-container"><img style="width: 601.70px" src="img\\99d953330bfe4d5f.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/99d953330bfe4d5f.png"></p>
 <p>許可の設定では「ポリシーを直接アタッチする」を選択して、「AdministratorAccess」を選択します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\ed09f27fd028c4d6.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/ed09f27fd028c4d6.png"></p>
 <p>設定内容を確認し、問題なければ「ユーザーの作成」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\4aec61029c94adaa.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/4aec61029c94adaa.png"></p>
 <p>作成されたユーザーのサインインURL、ユーザー名、パスワードをメモをとるかCSVファイルをダウンロードします。画面を閉じるとパスワードが確認できないので忘れずにメモをしておきましょう。</p>
 <p>メモを取ったら一度サインアウトをします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\22d6dc1d79f8258e.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/22d6dc1d79f8258e.png"></p>
 <p>サインアウトをしたらメモを取ったサインインURLで再びサインインを行います。サインイン後、右上のユーザー名をクリックしたときにAWSのアカウントIDと作成したIAMユーザー名が表示されていれば今回の作業アカウントの設定は完了です。</p>
-<p class="image-container"><img style="width: 318.00px" src="img\\75bb817e3b141117.png"></p>
+<p class="image-container"><img style="width: 318.00px" src="img/75bb817e3b141117.png"></p>
 <h2 is-upgraded>パラメーターストアを設定</h2>
 <p>Systems Managerの機能の一つでアプリケーションに必要なパラメータを管理するパラメーターストアというものがあります。この機能を使用することでAWS上で動作しているアプリケーションでAPIキーのようなシークレット情報をアプリケーション側で直接設定することなく一括管理をすることができます。</p>
 <p>以下のURLからパラメーターストアのコンソールを開きます</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/systems-manager/parameters?region=ap-northeast-1#" target="_blank">https://ap-northeast-1.console.aws.amazon.com/systems-manager/parameters?region=ap-northeast-1#</a></p>
 <p>コンソールを開いたら「パラメータの作成」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\2c9b4b32d51a8322.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/2c9b4b32d51a8322.png"></p>
 <p>Messaging APIのチャネルを作成したときにコピーしたチャネルシークレットをパラメータに設定します。</p>
 <ul>
 <li>名前：<code>/linebot-apprunner-handson/CHANNEL_SECRET</code> </li>
 <li>データ型：text</li>
 <li>値：Messaging APIのチャネルシークレット</li>
 </ul>
-<p class="image-container"><img style="width: 601.70px" src="img\\9f7951e34343c237.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/9f7951e34343c237.png"></p>
 <p>同様にメモしておいたアクセストークンも設定します。</p>
 <ul>
 <li>名前：<code>/linebot-apprunner-handson/CHANNEL_TOKEN</code></li>
 <li>データ型：text</li>
 <li>値：Messaging APIのアクセストークンを設定します</li>
 </ul>
-<p class="image-container"><img style="width: 601.70px" src="img\\d4d5606ae290c1d7.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/d4d5606ae290c1d7.png"></p>
 <h2 is-upgraded>Cloud9を構築する</h2>
 <p>続いて今回の開発環境であるCloud9を構築していきます。</p>
 <p>以下のURLでCloudShellを開きます。</p>
@@ -113,13 +113,13 @@
 cd cloud9-setup-for-prototyping
 ./bin/bootstrap</pre>
 <p>コマンドで環境構築が実行されて以下のスクショのように最後に「Done！」と表示されたらCloud9は正常に立ち上がっています。</p>
-<p class="image-container"><img style="width: 405.00px" src="img\\b633a082079c4c14.png"></p>
+<p class="image-container"><img style="width: 405.00px" src="img/b633a082079c4c14.png"></p>
 <p>以下のURLでCloud9のコンソールを開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloud9control/home?region=ap-northeast-1#/" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloud9control/home?region=ap-northeast-1#/</a></p>
 <p>「cloud9-for-prototyping」という名前の行にある「開く」をクリックしてCloud9の環境を立ち上げます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\f4a2c999ffff0509.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/f4a2c999ffff0509.png"></p>
 <p>Cloud9の実行環境が立ち上がったら、Cloud9の構築は完了です。今回構築したCloud9の環境は、30分何も操作が無いとインスタンスが自動で停止します。停止した場合はCloud9のコンソール画面からまた開き直すか、Cloud9の画面をリロードすればまた起動します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\f33f3b8691452a6d.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/f33f3b8691452a6d.png"></p>
 <h2 is-upgraded>ソースコードを用意</h2>
 <p>環境構築の最後は構築したCloud9にソースコードを用意してきます。</p>
 <p>Cloud9のターミナルで以下のコマンドを実行し、今回のハンズオンで使用するソースコード一式をクローンします。</p>
@@ -177,13 +177,13 @@ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS
 <p>以下のURLでECRのプライベートレポジトリのコンソール画面を開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/ecr/private-registry/repositories?region=ap-northeast-1" target="_blank">https://ap-northeast-1.console.aws.amazon.com/ecr/private-registry/repositories?region=ap-northeast-1</a></p>
 <p>コンソール画面から「line-bot-hands-on」の行にあるURIをコピーして、メモしておきます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\f311df7f7a3a04ea.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/f311df7f7a3a04ea.png"></p>
 <p>以下のコマンドを実行し、ECRレポジトリにPushできるようにタグを付けます。</p>
 <pre>docker tag line-bot-hands-on 【メモしたDockerイメージのURI】</pre>
 <p>以下のコマンドを実行し、DockerイメージをPushします。</p>
 <pre>docker push【メモしたDockerイメージのURI】</pre>
 <p>ECRのコンソールから「line-bot-hands-on」のレポジトリを開いたときに以下の通り一覧にイメージが表示されていればPushは正常に完了しています。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\177d3d67e5ef0b13.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/177d3d67e5ef0b13.png"></p>
 <h2 is-upgraded>App Runnerのサービス構築</h2>
 <p>ECRが用意できたところでApp Runnerで動かすアプリケーションをデプロイしていきます。以下のコマンドを実行してApp Runnerのアプリケーションを構築していきます。</p>
 <pre>cd /home/ec2-user/environment/line-bot-aws-app-runner-handson/cdk
@@ -204,33 +204,33 @@ arn:aws:cloudformation:ap-northeast-1:123456789012:stack/HandsonAppStack/dc6e487
 <p>ターミナルで動作確認できたところでAWSのコンソールでも確認してみます。以下のURLでApp Runnerのコンソールを開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/apprunner/home?region=ap-northeast-1#/services" target="_blank">https://ap-northeast-1.console.aws.amazon.com/apprunner/home?region=ap-northeast-1#/services</a></p>
 <p>サービス一覧から「line-bot-hands-on」を開きます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\c80eca4233eb4212.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/c80eca4233eb4212.png"></p>
 <p>サービスの詳細画面の一番下にある「アプリケーションログ」を開きます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\a669e67aac041b86.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/a669e67aac041b86.png"></p>
 <p>ダイアログが開き、以下のようにヘルスチェックのログを確認することができます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\e1f3d3883c8e9270.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/e1f3d3883c8e9270.png"></p>
 <h2 is-upgraded>Webhook URLを設定</h2>
 <p>ここでLINEのMessaging APIのチャネル管理画面を開き、App RunnerのサービスURLをWebhook URLとして設定します。Webhook URLの設定は「Messaging API設定」タブにあります。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\3b6b68502513c044.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/3b6b68502513c044.png"></p>
 <p>Webhook URLには<code>【App RunnerのサービスURL】/callback</code> を設定して、「更新」ボタンを入力します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\2bf0fb4a1f989f76.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/2bf0fb4a1f989f76.png"></p>
 <p>更新後に表示される「検証」ボタンをクリックするとWebhook URLの疎通確認を行います。以下のダイアログが表示されればWebhook URLは正常に動作しています。</p>
-<p class="image-container"><img style="width: 324.00px" src="img\\8f39d5ed3d867599.png"></p>
+<p class="image-container"><img style="width: 324.00px" src="img/8f39d5ed3d867599.png"></p>
 <p>Webhook URLの疎通確認ができたら、「Webhookの利用」を有効にしておきます。</p>
-<p class="image-container"><img style="width: 214.00px" src="img\\2ce5c16bd0d4ea97.png"></p>
+<p class="image-container"><img style="width: 214.00px" src="img/2ce5c16bd0d4ea97.png"></p>
 <p>続いてWebhookを使ってやり取りを行うために公式アカウントの機能を無効にします。Webhookの設定の下にある「LINE公式アカウント機能」の項目内の「応答メッセージ」の行にある「編集」のリンクをクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\50eb2d136568c4cf.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/50eb2d136568c4cf.png"></p>
 <p>別タブで開かれる公式アカウントマネージャーの画面にある「応答メッセージ」と「あいさつメッセージ」をそれぞれ無効にします。無効にしたら公式アカウントマネージャーの画面はもう使用しないので、閉じても結構です。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\f934a11b2b0b3e15.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/f934a11b2b0b3e15.png"></p>
 <h2 is-upgraded>動作確認</h2>
 <p>ここまでできたら、Messaging API 設定の画面の上部にあるQRコードをスキャンして、LINE Botを友だち追加します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\9504b65c236704e8.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/9504b65c236704e8.png"></p>
 <p>友だち追加後、以下のメッセージが表示されたらフォローイベントが機能しています</p>
-<p class="image-container"><img style="width: 217.50px" src="img\\4f2fc7b65c4bf34b.png"></p>
+<p class="image-container"><img style="width: 217.50px" src="img/4f2fc7b65c4bf34b.png"></p>
 <p>試しに何かテキストでメッセージを送ってみます。送信するとBotから送信したメッセージがそのまま返答されることを確認できます。</p>
-<p class="image-container"><img style="width: 232.50px" src="img\\399fbb76946390cf.png"></p>
+<p class="image-container"><img style="width: 232.50px" src="img/399fbb76946390cf.png"></p>
 <p>App Runnerのコンソール画面からも実際にメッセージを受け取っていることを確認できます。(ログを確認したタイミングによっては実際にメッセージを受け取っていることを確認できないこともあるので、表示範囲を調整してみてください)</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\52006c3d54b01db8.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/52006c3d54b01db8.png"></p>
 <p>これでオウム返しのボットが完成しました。ここからBotを改良して機能拡張させますが、その前に効率よくアプリケーションをデプロイするためにCI/CDの環境を次のステップで更新していきます。</p>
 
 
@@ -254,8 +254,8 @@ arn:aws:cloudformation:ap-northeast-1:123456789012:stack/HandsonPipelineStack/fb
 <h2 is-upgraded>CodeCommitへコードをPushする</h2>
 <p>以下のURLでCodeCommitのコンソール画面を開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/codesuite/codecommit/repositories?region=ap-northeast-1" target="_blank">https://ap-northeast-1.console.aws.amazon.com/codesuite/codecommit/repositories?region=ap-northeast-1</a></p>
-<p>コンソール画面を開いたら、「line-bot-hands-on」の行にある「HTTPS」のクリップボードボタンをクリックしてレポジトリのリンクをクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\c3a9bbb3b8d52475.png"></p>
+<p>コンソール画面を開いたら、「line-bot-hands-on-【AWSのアカウントID】」の行にある「HTTPS」のクリップボードボタンをクリックしてレポジトリのリンクをクリックします。</p>
+<p class="image-container"><img style="width: 601.70px" src="img/80abd404cd5466bf.png"></p>
 <p>Cloud9のエディタ画面に戻り、以下のコマンドでアプリケーションのディレクトリ内にGitレポジトリを設定します。</p>
 <pre>cd /home/ec2-user/environment/line-bot-aws-app-runner-handson/app
 git init 
@@ -270,17 +270,17 @@ git branch -m main</pre>
 git commit -am &#34;First Commit&#34;
 git push origin main</pre>
 <p>これでCodeCommitのレポジトリにコードが登録されました。試しにCodeCommitのレポジトリの「line-bot-hands-on」を開くと、以下のスクショの通りBotのソースコード一式が登録されていることが確認できます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\951c8773260e855c.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/951c8773260e855c.png"></p>
 <h2 is-upgraded>CodePipelineの内容を確認</h2>
 <p>今回のハンズオンではCodeCommitのレポジトリに変更したファイルがPushされるとDockerイメージのビルドが実行されるようにCodePipelineを定義しています。</p>
 <p>そこで、以下のURLでCodePipelineのコンソールを開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/codesuite/codepipeline/pipelines?region=ap-northeast-1" target="_blank">https://ap-northeast-1.console.aws.amazon.com/codesuite/codepipeline/pipelines?region=ap-northeast-1</a></p>
 <p>パイプラインの一覧から「line-bot-hands-on」をクリックして開きます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\1936fc4ee39f9c5c.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/1936fc4ee39f9c5c.png"></p>
 <p>パイプラインを開くとCodeCommitとCodeBuildのステータスが2つとも成功していることが確認できます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\44ba9b81c30520b0.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/44ba9b81c30520b0.png"></p>
 <p>実際にECRのレポジトリを確認するとCodeBuildでビルドしたイメージにlatestとコミットIDのタグがそれぞれ作成されていればCI/CDは正常に機能しています。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\60e2afff1ddcd42a.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/60e2afff1ddcd42a.png"></p>
 <p>これでDockerイメージを自動でビルド・Pushするフローが出来上がり、ECRのイメージもバージョン管理ができるようになる仕組みが出来上がりました。ここまでできたら、最後のステップとしてDynamoDBを使ってユーザーが送信したメッセージの内容を記録、確認、削除できるTodoボットにアップデートしていきます。</p>
 
 
@@ -314,24 +314,24 @@ git commit -am &#34;TODOボットにアップデート&#34;</pre>
 <p>確認できたら変更内容をCodeCommitのレポジトリにPushします。</p>
 <pre>git push origin main</pre>
 <p>Push後CodePipelineを開くと以下の通りイメージのビルドが実行されていることが確認できます。このままビルドが完了するまで待ちます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\b13fba39872d188f.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/b13fba39872d188f.png"></p>
 <p>ビルドが完了すると今度はApp Runnerのサービス画面でECRのlatestタグのイメージが更新されたことを検知してデプロイが実行されていることが確認できます。これも5分程度かかるので、完了するまで待ちます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\3d564bcce003d083.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/3d564bcce003d083.png"></p>
 <h2 is-upgraded>動作確認</h2>
 <p>デプロイが完了したら動作確認です。先程友だち追加したボットに対して何かタスクをメッセージで投げてみます。その後Step1で作ったオウム返しとは違って、ボットから「登録しました」とリプライが来ます。これでデータベースに登録されている状態になります。</p>
-<p class="image-container"><img style="width: 206.27px" src="img\\6667a751de718fad.png"></p>
+<p class="image-container"><img style="width: 206.27px" src="img/6667a751de718fad.png"></p>
 <p>何個かメッセージを入力したあとに <code>list</code> とメッセージを送信するとボットに追加したタスクの一覧をテンプレートメッセージでリプライします。</p>
-<p class="image-container"><img style="width: 205.38px" src="img\\95b54aa535cd5416.png"></p>
+<p class="image-container"><img style="width: 205.38px" src="img/95b54aa535cd5416.png"></p>
 <p>このテンプレートメッセージはただ一覧を表示するだけではなく、完了したタスクのボタンをタップすると以下のようにDBからタスクのデータを削除したことをリプライします。</p>
-<p class="image-container"><img style="width: 189.50px" src="img\\9c7dafd2518679c8.png"></p>
+<p class="image-container"><img style="width: 189.50px" src="img/9c7dafd2518679c8.png"></p>
 <h2 is-upgraded>DynamoDBのテーブルも確認</h2>
 <p>実際にBotが保存したデータをDynamoDBでも確認します。</p>
 <p>以下のURLでDynamoDBのコンソール画面を開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/dynamodbv2/home?region=ap-northeast-1#tables" target="_blank">https://ap-northeast-1.console.aws.amazon.com/dynamodbv2/home?region=ap-northeast-1#tables</a></p>
 <p>テーブルの一覧にある <code>line-bot-hands-on-todo</code> を開きます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\a49933310ab2542d.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/a49933310ab2542d.png"></p>
 <p>「テーブルアイテムの探索」をクリックすると、以下の通りテーブル上にデータが保存されていることが確認できます。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\9404a009ebf1b8d0.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/9404a009ebf1b8d0.png"></p>
 <p>以上でハンズオンの内容はすべて終了です。お疲れ様でした！</p>
 <p>最後に片付け手順を解説します。</p>
 
@@ -351,7 +351,7 @@ cdk destroy --all</pre>
 <p>以下のURLからCloud9のコンソール画面を開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloud9control/home?region=ap-northeast-1#/" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloud9control/home?region=ap-northeast-1#/</a></p>
 <p><code>cloud9-for-prototyping</code> を選択して、「削除」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\996fce78136a3eaf.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/996fce78136a3eaf.png"></p>
 <h2 is-upgraded>Bootstrapで作成されたスタックを削除</h2>
 <p>CDKのBootstrapのときに構築された「CDKToolkit」スタックも不要であれば削除します。</p>
 <aside class="warning"><p>すでにCDKでアプリケーションを構築している場合は削除すると次回のデプロイでエラーが起きるためこの手順は行わないようにしてください。</p>
@@ -359,42 +359,44 @@ cdk destroy --all</pre>
 <p>スタックを削除する前にS3バケットの中身を空にする必要があります。以下のURLでS3バケットのコンソール画面を開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/s3/buckets?region=ap-northeast-1" target="_blank">https://ap-northeast-1.console.aws.amazon.com/s3/buckets?region=ap-northeast-1</a></p>
 <p>AWSのコンソールから <code>cdk-</code> から始まるバケットを選択して【空にする】を選択します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\376fb146f4f7d187.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/376fb146f4f7d187.png"></p>
 <p>削除の確認が表示されるので「完全に削除」と入力して、「空にする」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\4939d211c9912d49.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/4939d211c9912d49.png"></p>
 <p>再びS3のコンソールを開き、同じバケットを選択して「削除」をクリックしてバケットを削除します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\573369c007b7d23c.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/573369c007b7d23c.png"></p>
+<p><br>以下のURLからCloudFormationのコンソール画面を開きます。</p>
+<p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks?filteringText=&filteringStatus=active&viewNested=true" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks?filteringText=&amp;filteringStatus=active&amp;viewNested=true</a></p>
 <p>CloudFormationのコンソールから「CDKToolkit」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\da5c1f1f2d1af35b.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/da5c1f1f2d1af35b.png"></p>
 <p>「削除」ボタンをクリックして削除を実行します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\f31a9a11e3d7c7ab.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/f31a9a11e3d7c7ab.png"></p>
 <p>「イベント」タブをクリックして以下の通り論理ID「CDKToolkit」のステータスが <code>DELETE_COMPLETE</code> になればスタックの削除は完了です。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\a2e6e6585fa35cdb.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/a2e6e6585fa35cdb.png"></p>
 <h2 is-upgraded>パラメータストアの削除</h2>
 <p>パラメータストアに登録しているMessaging APIのアクセスキー、シークレットも削除します。</p>
 <p>以下のURLをクリックしてパラメータストアのコンソールを開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/systems-manager/parameters?region=ap-northeast-1#" target="_blank">https://ap-northeast-1.console.aws.amazon.com/systems-manager/parameters?region=ap-northeast-1#</a></p>
 <p>今回設定したパラメータを選択して、「削除」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\f628cc624576c636.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/f628cc624576c636.png"></p>
 <p>以下のダイアログが表示されるので、「パラメーターの削除」をクリックします。</p>
-<p class="image-container"><img style="width: 549.00px" src="img\\857a615ae4fd7df6.png"></p>
+<p class="image-container"><img style="width: 549.00px" src="img/857a615ae4fd7df6.png"></p>
 <h2 is-upgraded>CloudWatch Logsを削除</h2>
 <p>今回構築したアプリケーションのログも削除します。ログを残し続けるとわずかに保存料金がかかるので不要であれば削除しておくと安全です。</p>
 <p>以下のURLからロググループのコンソールを開きます。</p>
 <p><a href="https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups" target="_blank">https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#logsV2:log-groups</a></p>
 <p>今回構築したApp Runnerのサービス名「line-bot-hands-on」で絞り込むと以下の2つのグループが出力されるので選択して、「アクション→ロググループを削除」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\ee18a1425a340db9.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/ee18a1425a340db9.png"></p>
 <p>以下のダイアログが表示されたら、「削除」をクリックします。</p>
-<p class="image-container"><img style="width: 549.00px" src="img\\8332d28a5a1132d3.png"></p>
+<p class="image-container"><img style="width: 549.00px" src="img/8332d28a5a1132d3.png"></p>
 <h2 is-upgraded>Messaging APIのチャネルを削除</h2>
 <p>Messaging APIのチャネルを開き、「チャネル基本設定」タブをクリックして画面の一番下にある「削除」ボタンをクリックします。</p>
-<p class="image-container"><img style="width: 280.00px" src="img\\6c6bc826a718753d.png"></p>
+<p class="image-container"><img style="width: 280.00px" src="img/6c6bc826a718753d.png"></p>
 <p>削除の確認ダイアログが表示されます。このチャネルに紐づけられたLINE公式アカウントを削除するため、「LINE Official Account Managerを表示」をクリックしてLINE Official Account Managerの管理画面を確認します。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\ec968021c2b747bf.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/ec968021c2b747bf.png"></p>
 <p>削除の同意画面が表示されるので、注意事項を確認してチェックボックスにチェックを入れて、「アカウントを削除」をクリックします。</p>
-<p class="image-container"><img style="width: 601.70px" src="img\\98a3d61ec59b281d.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/98a3d61ec59b281d.png"></p>
 <p>確認のダイアログが表示されるので、「削除」をクリックします。公式アカウントの一覧画面に戻れば、LINE公式アカウントとMessaging APIのチャネルは正常に削除できています。</p>
-<p class="image-container"><img style="width: 400.00px" src="img\\22da92351583a952.png"></p>
+<p class="image-container"><img style="width: 400.00px" src="img/22da92351583a952.png"></p>
 <p>以上で今回のハンズオンの片付けは完了です。</p>
 
 
@@ -409,10 +411,10 @@ cdk destroy --all</pre>
 <p>ポストバックイベントは今回使用したテンプレートメッセージやフレックスメッセージなどに仕込まれたボタンを押すとそれを <code>data</code> プロパティに格納させることでメッセージとしては送信する必要なく、サーバーサイドでデータ処理をしたいときに使えます。今回はTodoリストのテンプレートメッセージに仕込んだボタンをタップした時のアクションとしてポストバックを採用しています。</p>
 <p><a href="https://developers.line.biz/ja/reference/messaging-api/#postback-action" target="_blank">https://developers.line.biz/ja/reference/messaging-api/#postback-action</a></p>
 <h2 is-upgraded>LINE Botに使用した言語</h2>
-<p class="image-container"><img style="width: 218.57px" src="img\\ac731533d0d66fca.png"></p>
+<p class="image-container"><img style="width: 218.57px" src="img/ac731533d0d66fca.png"></p>
 <p>今回、LINE BotはGo言語を使って記述しました。Googleが開発した静的型付け言語です。C言語のように型付けができて、かつPythonをはじめとしたスクリプト言語のように生産性が高く読みやすい言語設計になっています。そして、軽量で高速な処理を実現しているため、コンテナアプリケーションとの相性も抜群なので選定しました。</p>
 <h2 is-upgraded>AWS CDKについて</h2>
-<p class="image-container"><img style="width: 601.70px" src="img\\e166c02f6bf2682.png"></p>
+<p class="image-container"><img style="width: 601.70px" src="img/e166c02f6bf2682.png"></p>
 <p>AWS CDKはAWSのサービス構成をコードで定義するためのIaCツールです。IaCとはInfrastracture as Codeの略で、インフラ構成をコードベースで管理する仕組みをいいます。</p>
 <p>クラウドのアプリケーション構成をモダンなプログラミング言語で定義することができて、最終的にはCloudFormationのテンプレートに変換されてデプロイをされます。</p>
 <p>CDKを使って開発することで以下のようなメリットがあります。</p>
@@ -424,14 +426,14 @@ cdk destroy --all</pre>
 <p>CDKはものすごくアップデートが頻繁に行われており、CDKを使う際には公式ドキュメントなどでキャッチアップをするといいです。</p>
 <p><a href="https://github.com/aws/aws-cdk/releases" target="_blank">https://github.com/aws/aws-cdk/releases</a></p>
 <h2 is-upgraded>AWS App Runnerについて</h2>
-<p class="image-container"><img style="width: 236.50px" src="img\\5bb40503c599ec3f.png"></p>
+<p class="image-container"><img style="width: 236.50px" src="img/5bb40503c599ec3f.png"></p>
 <p>App Runnerにはデプロイのパターンが2つあります。一つはソースコードのレポジトリからデプロイするパターンと今回行ったビルドしたコンテナイメージデプロイするパターンと2つあります。</p>
 <p>ソースコードのパターンは、Github、またはBitbucketのレポジトリを使って、コンテナが分からなくてもアプリケーションをデプロイをすることができます。対応している言語はNode.js、Python、Go、PHP、Rubyなどですが、対応言語によってはバージョンを細かく指定できないところがデメリットです。そのため、細かくバージョンを指定したい時やそもそも対応していない言語で構築したアプリケーションを動かしたい時にはコンテナイメージをデプロイする方が早いので、今回のハンズオンでは自由度が高めのコンテナイメージをデプロイするパターンを紹介しました。</p>
 <h2 is-upgraded>CI/CDについて</h2>
-<p class="image-container"><img style="width: 396.00px" src="img\\4f7ab1fa95bcb035.png"></p>
+<p class="image-container"><img style="width: 396.00px" src="img/4f7ab1fa95bcb035.png"></p>
 <p>今回はAWSのサービスで完結できるようにCodeCommitのレポジトリ、CodeBuildを組み合わせたCI/CDを構築していますが、CodeBuild自体はGithubやBitbucketのレポジトリと連携してビルドするフローを構築することもできます。GithubやBitbucketでソースコード管理している場合はCodeCommitのレポジトリから置き換えるのもありです。</p>
 <h2 is-upgraded>DynamoDBのテーブル設計</h2>
-<p class="image-container"><img style="width: 263.29px" src="img\\9dfa06842d91f01a.png"></p>
+<p class="image-container"><img style="width: 263.29px" src="img/9dfa06842d91f01a.png"></p>
 <p>今回使用したDynamoDBのテーブルは以下の設計になっています。LINEのユーザーIDをパーティションキー、Webhookのイベントで取得できるtimestampをソートキーにした複合キーになっています。Queryを使用してLINEのユーザーIDでデータを絞り込むことでユーザー毎のTodoリストを作成できるような構成になっています。</p>
 <table>
 <tr><td colspan="1" rowspan="1"><p>アトリビュート名</p>
